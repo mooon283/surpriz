@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sənin üçün ❤️</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:black;
+color:white;
+text-align:center;
+overflow:hidden;
+}
+
+#login{
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+}
+
+input{
+padding:12px;
+font-size:18px;
+border-radius:10px;
+border:none;
+outline:none;
+margin-top:10px;
+}
+
+button{
+padding:12px 20px;
+margin-top:10px;
+border:none;
+border-radius:10px;
+background:#ff004f;
+color:white;
+cursor:pointer;
+font-size:16px;
+}
+
+#main{
+display:none;
+padding:20px;
+}
+
+img{
+width:280px;
+max-width:90%;
+border-radius:20px;
+box-shadow:0 0 25px #ff004f;
+margin-top:15px;
+}
+
+h1{
+color:#ff3366;
+}
+
+.message{
+max-width:700px;
+margin:auto;
+font-size:20px;
+line-height:1.8;
+margin-top:20px;
+}
+
+.music{
+display:inline-block;
+margin-top:20px;
+padding:12px 20px;
+background:#ff004f;
+color:white;
+border-radius:20px;
+text-decoration:none;
+}
+
+.heart{
+position:absolute;
+color:red;
+font-size:20px;
+animation:float 6s linear infinite;
+}
+
+@keyframes float{
+0%{transform:translateY(0); opacity:1;}
+100%{transform:translateY(-100vh); opacity:0;}
+}
+</style>
+</head>
+
+<body>
+
+<div id="login">
+<h2>🔒 Şifrəni daxil et</h2>
+<input type="password" id="pass" placeholder="Şifrə">
+<button onclick="check()">Daxil ol</button>
+</div>
+
+<div id="main">
+
+<h1>Səni çox sevirəm ❤️</h1>
+
+<img src="sevgi.jpg">
+
+<div class="message">
+
+<p>Bəzən sözlər hiss etdiklərimi anlatmağa kifayət etmir...</p>
+<p>Amma bir şeyi bilməyini istəyirəm:</p>
+<p><b>Yaxşı ki, varsan ❤️</b></p>
+<p>Həyatımın ən gözəl hissəsisən.</p>
+<p>Gülüşün mənə hər şeyi unudur.</p>
+<p>Səni çox sevirəm ❤️</p>
+
+</div>
+
+<a class="music" target="_blank"
+href="https://youtu.be/ZLp5dzy9Coo?si=z39Hl74Foz_NeO5Q">
+🎵 Mahnını Aç
+</a>
+
+</div>
+
+<script>
+
+function check(){
+let pass=document.getElementById("pass").value;
+
+if(pass==="14"){
+document.getElementById("login").style.display="none";
+document.getElementById("main").style.display="block";
+startHearts();
+}else{
+alert("Şifrə yanlışdır ❤️");
+}
+}
+
+function startHearts(){
+setInterval(()=>{
+let heart=document.createElement("div");
+heart.classList.add("heart");
+heart.innerHTML="❤️";
+heart.style.left=Math.random()*100+"vw";
+heart.style.top="100vh";
+document.body.appendChild(heart);
+
+setTimeout(()=>{
+heart.remove();
+},6000);
+
+},300);
+}
+
+</script>
+
+</body>
+</html>
