@@ -9,7 +9,7 @@
 body{
 margin:0;
 font-family:Arial;
-background:black;
+background: black;
 color:white;
 text-align:center;
 overflow:hidden;
@@ -26,10 +26,9 @@ align-items:center;
 input{
 padding:12px;
 font-size:18px;
-border-radius:10px;
 border:none;
+border-radius:10px;
 outline:none;
-margin-top:10px;
 }
 
 button{
@@ -37,10 +36,9 @@ padding:12px 20px;
 margin-top:10px;
 border:none;
 border-radius:10px;
-background:#ff004f;
+background:#ff0055;
 color:white;
 cursor:pointer;
-font-size:16px;
 }
 
 #main{
@@ -48,16 +46,16 @@ display:none;
 padding:20px;
 }
 
-img{
-width:280px;
-max-width:90%;
-border-radius:20px;
-box-shadow:0 0 25px #ff004f;
-margin-top:15px;
+h1{
+color:#ff4d6d;
 }
 
-h1{
-color:#ff3366;
+img{
+width:300px;
+max-width:90%;
+border-radius:20px;
+box-shadow:0 0 25px #ff0055;
+margin-top:15px;
 }
 
 .message{
@@ -66,16 +64,6 @@ margin:auto;
 font-size:20px;
 line-height:1.8;
 margin-top:20px;
-}
-
-.music{
-display:inline-block;
-margin-top:20px;
-padding:12px 20px;
-background:#ff004f;
-color:white;
-border-radius:20px;
-text-decoration:none;
 }
 
 .heart{
@@ -89,17 +77,28 @@ animation:float 6s linear infinite;
 0%{transform:translateY(0); opacity:1;}
 100%{transform:translateY(-100vh); opacity:0;}
 }
+
+.music{
+margin-top:20px;
+}
+
+iframe{
+margin-top:20px;
+border-radius:15px;
+}
 </style>
 </head>
 
 <body>
 
+<!-- ŞİFRƏ EKRANI -->
 <div id="login">
 <h2>🔒 Şifrəni daxil et</h2>
 <input type="password" id="pass" placeholder="Şifrə">
 <button onclick="check()">Daxil ol</button>
 </div>
 
+<!-- ƏSAS SAYT -->
 <div id="main">
 
 <h1>Səni çox sevirəm ❤️</h1>
@@ -117,15 +116,18 @@ animation:float 6s linear infinite;
 
 </div>
 
-<a class="music" target="_blank"
-href="https://youtu.be/ZLp5dzy9Coo?si=z39Hl74Foz_NeO5Q">
-🎵 Mahnını Aç
-</a>
+<!-- YOUTUBE MUSİQİ (SAYT İÇİNDƏ) -->
+<iframe width="300" height="170"
+src="https://www.youtube.com/embed/ZLp5dzy9Coo?autoplay=1"
+allow="autoplay; encrypted-media"
+allowfullscreen>
+</iframe>
 
 </div>
 
 <script>
 
+// şifrə yoxlama
 function check(){
 let pass=document.getElementById("pass").value;
 
@@ -138,6 +140,7 @@ alert("Şifrə yanlışdır ❤️");
 }
 }
 
+// ürəklər
 function startHearts(){
 setInterval(()=>{
 let heart=document.createElement("div");
