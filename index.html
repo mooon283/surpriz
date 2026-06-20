@@ -94,7 +94,7 @@
             animation: pulse 2s infinite;
         }
 
-        /* Sənin istədiyin şeir */
+        /* Şeir Bölməsi */
         .poem-text {
             font-size: 22px;
             color: #ffb3c1;
@@ -104,18 +104,19 @@
             text-shadow: 0 0 5px rgba(255, 179, 193, 0.4);
         }
 
-        /* Şəkil (Hələlik gizlidir) */
+        /* Sənin Şəklin (İndi tam aktivdir və görünəcək) */
         .love-image {
             width: 230px;
             height: 230px;
-            border-radius: 50%;
+            border-radius: 50%; /* Şəkli dairəvi edir */
             object-fit: cover;
             border: 4px solid #ff4d6d;
             box-shadow: 0 0 25px rgba(255, 77, 109, 0.7);
             margin: 0 auto 10px auto;
+            display: block; /* Şəkli ortalayır və aktiv edir */
         }
 
-        /* YouTube pleyerini tamamilə gizlədirik ki, ancaq səs gəlsin */
+        /* YouTube Gizli Pleyer */
         #youtube-player {
             position: absolute;
             width: 1px;
@@ -124,7 +125,7 @@
             pointer-events: none;
         }
 
-        /* Axan Qırmızı Ürəklər */
+        /* Axan Ürəklər */
         .heart {
             position: absolute;
             color: #ff3344;
@@ -164,7 +165,7 @@
     </div>
 
     <div id="main-content">
-        <img src="sevgilim.jpg" alt="Bizim Şəkil" class="love-image" id="love-img" onerror="this.style.display='none';">
+        <img src="sevgilim.jpg" alt="Bizim Şəkil" class="love-image" id="love-img">
         
         <div class="romantic-text">Səni Sevirəm! ❤️</div>
         
@@ -191,11 +192,11 @@
                     mainContent.style.display = 'block';
                     setTimeout(() => mainContent.style.opacity = 1, 50);
                     
-                    // Düyməyə basan kimi YouTube videosunu arxa fonda başladırıq
+                    // YouTube videosu arxa fonda başlayır
                     const player = document.getElementById('youtube-player');
                     player.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
                     
-                    // Ürəklər axmağa başlayır
+                    // Ürəklər axır
                     setInterval(createHeart, 300);
                 }, 1000);
             } else {
@@ -203,7 +204,6 @@
             }
         }
 
-        // Ürək yağışı
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
