@@ -104,25 +104,16 @@
             text-shadow: 0 0 5px rgba(255, 179, 193, 0.4);
         }
 
-        /* Sənin Şəklin (İndi tam aktivdir və görünəcək) */
+        /* Sənin Şəklin */
         .love-image {
             width: 230px;
             height: 230px;
-            border-radius: 50%; /* Şəkli dairəvi edir */
+            border-radius: 50%;
             object-fit: cover;
             border: 4px solid #ff4d6d;
             box-shadow: 0 0 25px rgba(255, 77, 109, 0.7);
             margin: 0 auto 10px auto;
-            display: block; /* Şəkli ortalayır və aktiv edir */
-        }
-
-        /* YouTube Gizli Pleyer */
-        #youtube-player {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            opacity: 0;
-            pointer-events: none;
+            display: block;
         }
 
         /* Axan Ürəklər */
@@ -176,7 +167,7 @@
             Mən öləndə çıxıb gedərsən..
         </div>
 
-        <iframe id="youtube-player" src="https://www.youtube.com/embed/ZLp5dzy9Coo?enablejsapi=1" allow="autoplay"></iframe>
+        <audio id="bg-music" src="mahni.mp3" loop></audio>
     </div>
 
     <script>
@@ -192,9 +183,9 @@
                     mainContent.style.display = 'block';
                     setTimeout(() => mainContent.style.opacity = 1, 50);
                     
-                    // YouTube videosu arxa fonda başlayır
-                    const player = document.getElementById('youtube-player');
-                    player.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                    // Şifrə yazılan kimi MP3 mahnısı başlayır (Reklamsız)
+                    const music = document.getElementById('bg-music');
+                    music.play().catch(error => console.log("Mahnı hələ yüklənməyib."));
                     
                     // Ürəklər axır
                     setInterval(createHeart, 300);
