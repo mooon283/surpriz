@@ -80,40 +80,76 @@
             text-align: center;
             z-index: 2;
             max-width: 600px;
+            max-height: 95vh;
+            overflow-y: auto;
             padding: 20px;
             opacity: 0;
             transition: opacity 1.5s ease;
         }
 
+        #main-content::-webkit-scrollbar {
+            width: 0px;
+        }
+
         .romantic-text {
-            font-size: 32px;
+            font-size: 30px;
             color: #ff4d6d;
-            margin-top: 20px;
+            margin-top: 15px;
             text-shadow: 0 0 10px rgba(255, 77, 109, 0.6);
             font-weight: bold;
             animation: pulse 2s infinite;
         }
 
-        /* Şeir Bölməsi */
+        /* Canlı Yazılan Mətn Bölməsi */
         .poem-text {
-            font-size: 22px;
+            font-size: 18px;
             color: #ffb3c1;
-            margin-top: 20px;
+            margin-top: 15px;
             line-height: 1.6;
             font-style: italic;
-            text-shadow: 0 0 5px rgba(255, 179, 193, 0.4);
+            text-shadow: 0 0 5px rgba(255, 179, 193, 0.3);
+            padding: 0 10px;
+            text-align: center;
+            min-height: 100px; /* Yazı yazılarkən ekranın oynamaması üçün */
+        }
+
+        /* Yazı kursoru effekti */
+        .poem-text::after {
+            content: '|';
+            animation: blink 0.7s infinite;
         }
 
         /* Sənin Şəklin */
         .love-image {
-            width: 230px;
-            height: 230px;
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
             object-fit: cover;
             border: 4px solid #ff4d6d;
             box-shadow: 0 0 25px rgba(255, 77, 109, 0.7);
             margin: 0 auto 10px auto;
             display: block;
+        }
+
+        /* Eşq Sayğacı */
+        #counter-box {
+            background: rgba(255, 77, 109, 0.1);
+            border: 1px solid rgba(255, 77, 109, 0.3);
+            border-radius: 15px;
+            padding: 12px;
+            margin-top: 25px;
+            font-size: 16px;
+            color: #ffccd5;
+            text-shadow: 0 0 5px rgba(255, 204, 213, 0.5);
+            display: none; /* Yazı tam bitəndən sonra görünəcək */
+        }
+
+        #counter {
+            font-weight: bold;
+            color: #ff4d6d;
+            font-size: 18px;
+            display: block;
+            margin-top: 5px;
         }
 
         /* Axan Ürəklər */
@@ -145,6 +181,11 @@
             50% { transform: scale(1.03); }
             100% { transform: scale(1); }
         }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
     </style>
 </head>
 <body>
@@ -160,11 +201,11 @@
         
         <div class="romantic-text">Səni Sevirəm! ❤️</div>
         
-        <div class="poem-text">
-            Mən qala bilmərəm səndən aralı,<br>
-            Mənim ürəyimin parası sənsən.<br>
-            Mən yaşadıqca qal yanımda,<br>
-            Mən öləndə çıxıb gedərsən..
+        <div class="poem-text" id="typewriter-text"></div>
+
+        <div id="counter-box" id="counter-box-div">
+            ❤️ Bizim birlikdə keçirdiyimiz zaman:
+            <span id="counter">Hesablanır...</span>
         </div>
 
         <audio id="bg-music" src="mahni.mp3" loop></audio>
@@ -172,6 +213,14 @@
 
     <script>
         const GIZLI_SIFRE = "14"; 
+
+        // Sənin tanışlıq tarixin: 14 Aprel 2024 (Aprel ayı = 3)
+        const baslangicTarixi = new Date(2024, 3, 14, 0, 0, 0); 
+
+        // Sənin o möhtəşəm sözlərin
+        const textToWrite = "Ehtiyacım olan hər şey sənsən. İnandığım gələcək, heçə saydığım keçmiş.. tükənməyən ümidlərin adı sənsən, sən ehtiyac duyduğum hər şeysən. Sakitliyim və ən böyük qəzəbim, məqsədlərim, hər dəqiqə dəyişən amma öncədən düşünülmüş fikirlərim, məntiqsizliyim, bağlı olduğum, qopa bilmədiyim tək şey sənsən.. dözülməz amma əl çəkməsi də mümkün olmayan. Əllərimi əsdirən sevincim.. xəyalını qurduğum tək sənsən.....";
+
+        let index = 0;
 
         function checkPassword() {
             const input = document.getElementById('password-input').value;
@@ -183,18 +232,51 @@
                     mainContent.style.display = 'block';
                     setTimeout(() => mainContent.style.opacity = 1, 50);
                     
-                    // Şifrə yazılan kimi MP3 mahnısı başlayır (Reklamsız)
+                    // Musiqi başlayır
                     const music = document.getElementById('bg-music');
                     music.play().catch(error => console.log("Mahnı hələ yüklənməyib."));
                     
                     // Ürəklər axır
                     setInterval(createHeart, 300);
+                    
+                    // Yazı yazılmağa başlayır
+                    setTimeout(typeWriter, 500);
                 }, 1000);
             } else {
                 alert("Yalnış şifrə! Yenidən yoxla mənərim. ❤️");
             }
         }
 
+        // Hərfləri bir-bir yazan funksiya
+        function typeWriter() {
+            if (index < textToWrite.length) {
+                document.getElementById("typewriter-text").innerHTML += textToWrite.charAt(index);
+                index++;
+                // Yazılma sürəti: 45 millisaniyə (çox sürətli və ya çox yavaş deyil, ideal oxunma sürəti)
+                setTimeout(typeWriter, 45); 
+            } else {
+                // Yazı tam bitəndən sonra sayğac qutusu səliqəli şəkildə açılır
+                const counterBox = document.getElementById('counter-box');
+                counterBox.style.display = 'block';
+                setInterval(updateCounter, 1000);
+                updateCounter();
+            }
+        }
+
+        // Dəqiq zaman sayğacı
+        function updateCounter() {
+            const indi = new Date();
+            const ferq = indi - baslangicTarixi;
+
+            const gun = Math.floor(ferq / (1000 * 60 * 60 * 24));
+            const saat = Math.floor((ferq % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const deqiqe = Math.floor((ferq % (1000 * 60 * 60)) / (1000 * 60));
+            const saniye = Math.floor((ferq % (1000 * 60)) / 1000);
+
+            document.getElementById('counter').innerHTML = `${gun} gün, ${saat} saat, ${deqiqe} dəqiqə, ${saniye} saniyə`;
+        }
+
+        // Ürək yağışı
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
