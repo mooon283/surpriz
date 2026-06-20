@@ -94,26 +94,37 @@
             animation: pulse 2s infinite;
         }
 
-        .sub-text {
+        /* Sənin istədiyin şeir */
+        .poem-text {
             font-size: 22px;
             color: #ffb3c1;
-            margin-top: 15px;
-            line-height: 1.5;
+            margin-top: 20px;
+            line-height: 1.6;
+            font-style: italic;
+            text-shadow: 0 0 5px rgba(255, 179, 193, 0.4);
         }
 
-        /* Sənin Şəklin üçün yer (Hələlik gizlidir, sonra həll edəcəyik) */
+        /* Şəkil (Hələlik gizlidir) */
         .love-image {
-            display: none; /* Şəkli sonra qoyanda bu sətri siləcəyik */
-            width: 250px;
-            height: 250px;
+            width: 230px;
+            height: 230px;
             border-radius: 50%;
             object-fit: cover;
             border: 4px solid #ff4d6d;
             box-shadow: 0 0 25px rgba(255, 77, 109, 0.7);
-            margin: 0 auto 20px auto;
+            margin: 0 auto 10px auto;
         }
 
-        /* Axan Ürəklər */
+        /* YouTube pleyerini tamamilə gizlədirik ki, ancaq səs gəlsin */
+        #youtube-player {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Axan Qırmızı Ürəklər */
         .heart {
             position: absolute;
             color: #ff3344;
@@ -153,25 +164,26 @@
     </div>
 
     <div id="main-content">
-        <img src="sevgilim.jpg" alt="Bizim Şəkil" class="love-image" id="love-img">
+        <img src="sevgilim.jpg" alt="Bizim Şəkil" class="love-image" id="love-img" onerror="this.style.display='none';">
         
         <div class="romantic-text">Səni Sevirəm! ❤️</div>
-        <div class="sub-text">Yaxşı ki varsan, Mən qalA bilmərəm səndən aralı,
-Mənim ürəyiMin parası sənsən.
-Mən yaşadıqca qal yanImda,
-Mən öləndə çıxıb gedərsəN 🥰</div>
+        
+        <div class="poem-text">
+            Mən qala bilmərəm səndən aralı,<br>
+            Mənim ürəyimin parası sənsən.<br>
+            Mən yaşadıqca qal yanımda,<br>
+            Mən öləndə çıxıb gedərsən..
+        </div>
 
-        <audio id="bg-music" src="" loop></audio>
+        <iframe id="youtube-player" src="https://www.youtube.com/embed/ZLp5dzy9Coo?enablejsapi=1" allow="autoplay"></iframe>
     </div>
 
     <script>
-        // Şifrəni istədiyin kimi 14 etdim
         const GIZLI_SIFRE = "14"; 
 
         function checkPassword() {
             const input = document.getElementById('password-input').value;
             if (input === GIZLI_SIFRE) {
-                // Şifrə düzdürsə ekranı itir və əsas saytı aç
                 document.getElementById('login-screen').style.opacity = 0;
                 setTimeout(() => {
                     document.getElementById('login-screen').style.display = 'none';
@@ -179,15 +191,19 @@ Mən öləndə çıxıb gedərsəN 🥰</div>
                     mainContent.style.display = 'block';
                     setTimeout(() => mainContent.style.opacity = 1, 50);
                     
-                    // Ürəkləri axıtmağa başla
+                    // Düyməyə basan kimi YouTube videosunu arxa fonda başladırıq
+                    const player = document.getElementById('youtube-player');
+                    player.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                    
+                    // Ürəklər axmağa başlayır
                     setInterval(createHeart, 300);
                 }, 1000);
             } else {
-                alert("Yalnış şifrə! Yenidən yoxla. ❤️");
+                alert("Yalnış şifrə! Yenidən yoxla mənərim. ❤️");
             }
         }
 
-        // Ürək yağışı funksiyası
+        // Ürək yağışı
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
