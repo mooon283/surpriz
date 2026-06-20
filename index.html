@@ -100,23 +100,21 @@
             animation: pulse 2s infinite;
         }
 
-        /* Canlı Yazılan Mətn Bölməsi */
+        /* Yavaş-yavaş görünən mətn bölməsi */
         .poem-text {
             font-size: 18px;
             color: #ffb3c1;
-            margin-top: 15px;
+            margin-top: 25px;
             line-height: 1.6;
             font-style: italic;
             text-shadow: 0 0 5px rgba(255, 179, 193, 0.3);
             padding: 0 10px;
             text-align: center;
-            min-height: 100px; /* Yazı yazılarkən ekranın oynamaması üçün */
-        }
-
-        /* Yazı kursoru effekti */
-        .poem-text::after {
-            content: '|';
-            animation: blink 0.7s infinite;
+            
+            /* Görünməzdən görünənə keçid animasiyası */
+            opacity: 0;
+            animation: fadeInText 4s forwards; /* 4 saniyə ərzində yavaşca açılacaq */
+            animation-delay: 1s; /* Şifrə yazılandan 1 saniyə sonra başlayacaq */
         }
 
         /* Sənin Şəklin */
@@ -141,7 +139,11 @@
             font-size: 16px;
             color: #ffccd5;
             text-shadow: 0 0 5px rgba(255, 204, 213, 0.5);
-            display: none; /* Yazı tam bitəndən sonra görünəcək */
+            
+            /* Sayğac da mətnlə birgə yavaşca görünəcək */
+            opacity: 0;
+            animation: fadeInText 4s forwards;
+            animation-delay: 2s; /* Mətndən bir az sonra yavaşca süzüləcək */
         }
 
         #counter {
@@ -163,6 +165,12 @@
             animation: fall linear infinite;
         }
 
+        /* Görünməzlikdən görünənə keçid qaydası */
+        @keyframes fadeInText {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         @keyframes fall {
             0% {
                 top: -10%;
@@ -181,11 +189,6 @@
             50% { transform: scale(1.03); }
             100% { transform: scale(1); }
         }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
     </style>
 </head>
 <body>
@@ -201,9 +204,18 @@
         
         <div class="romantic-text">Səni Sevirəm! ❤️</div>
         
-        <div class="poem-text" id="typewriter-text"></div>
+        <div class="poem-text">
+            Ehtiyacım olan hər şey sənsən.<br>
+            İnandığım gələcək, heçə saydığım keçmiş..<br>
+            tükənməyən ümidlərin adı sənsən, sən ehtiyac duyduğum hər şeysən.<br>
+            Sakitliyim və ən böyük qəzəbim, məqsədlərim, hər dəqiqə dəyişən<br>
+            amma öncədən düşünülmüş fikirlərim, məntiqsizliyim,<br>
+            bağlı olduğum, qopa bilmədiyim tək şey sənsən..<br>
+            dözülməz amma əl çəkməsi də mümkün olmayan.<br>
+            Əllərimi əsdirən sevincim.. xəyalını qurduğum tək sənsən.....
+        </div>
 
-        <div id="counter-box" id="counter-box-div">
+        <div id="counter-box">
             ❤️ Bizim birlikdə keçirdiyimiz zaman:
             <span id="counter">Hesablanır...</span>
         </div>
@@ -214,13 +226,8 @@
     <script>
         const GIZLI_SIFRE = "14"; 
 
-        // Sənin tanışlıq tarixin: 14 Aprel 2024 (Aprel ayı = 3)
+        // Sənin tanışlıq tarixin: 14 Aprel 2024
         const baslangicTarixi = new Date(2024, 3, 14, 0, 0, 0); 
-
-        // Sənin o möhtəşəm sözlərin
-        const textToWrite = "Ehtiyacım olan hər şey sənsən. İnandığım gələcək, heçə saydığım keçmiş.. tükənməyən ümidlərin adı sənsən, sən ehtiyac duyduğum hər şeysən. Sakitliyim və ən böyük qəzəbim, məqsədlərim, hər dəqiqə dəyişən amma öncədən düşünülmüş fikirlərim, məntiqsizliyim, bağlı olduğum, qopa bilmədiyim tək şey sənsən.. dözülməz amma əl çəkməsi də mümkün olmayan. Əllərimi əsdirən sevincim.. xəyalını qurduğum tək sənsən.....";
-
-        let index = 0;
 
         function checkPassword() {
             const input = document.getElementById('password-input').value;
@@ -236,30 +243,13 @@
                     const music = document.getElementById('bg-music');
                     music.play().catch(error => console.log("Mahnı hələ yüklənməyib."));
                     
-                    // Ürəklər axır
+                    // Ürəklər və sayğac hesablanması başlayır
                     setInterval(createHeart, 300);
-                    
-                    // Yazı yazılmağa başlayır
-                    setTimeout(typeWriter, 500);
+                    setInterval(updateCounter, 1000);
+                    updateCounter();
                 }, 1000);
             } else {
                 alert("Yalnış şifrə! Yenidən yoxla mənərim. ❤️");
-            }
-        }
-
-        // Hərfləri bir-bir yazan funksiya
-        function typeWriter() {
-            if (index < textToWrite.length) {
-                document.getElementById("typewriter-text").innerHTML += textToWrite.charAt(index);
-                index++;
-                // Yazılma sürəti: 45 millisaniyə (çox sürətli və ya çox yavaş deyil, ideal oxunma sürəti)
-                setTimeout(typeWriter, 45); 
-            } else {
-                // Yazı tam bitəndən sonra sayğac qutusu səliqəli şəkildə açılır
-                const counterBox = document.getElementById('counter-box');
-                counterBox.style.display = 'block';
-                setInterval(updateCounter, 1000);
-                updateCounter();
             }
         }
 
